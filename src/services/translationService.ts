@@ -1,8 +1,11 @@
 import axios from 'axios';
 import { TranslateRequestBody, TranslatedWord } from '../types';
 import { filterAndChunkWords } from '../utils/wordFilter';
+import dotenv from 'dotenv';
+// Load environment variables from .env file
+dotenv.config();
+const TRANSLATION_SERVICE_URL:string = process.env.TRANSLATION_SERVICE_ENV!
 
-const TRANSLATION_SERVICE_URL = "http://127.0.0.1:5000/translate";
 
 async function translateBatch(chunk: string[], targetLanguage: string): Promise<TranslatedWord[]> {
   const requestPayload = {
