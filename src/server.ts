@@ -1,11 +1,12 @@
 import express, { Request, Response } from 'express';
+import { validateTranslateRequest } from './middleware/validationMiddleware';
 import { translateWordsInBatch } from './services/translationService';
 import { TranslateRequestBody, TranslateResponseBody } from './types';
 
 const app = express();
 app.use(express.json());
 
-app.post('/translate', async (req: Request, res: Response) => {
+app.post('/translate', validateTranslateRequest, async (req: Request, res: Response) => {
   const { words, targetLanguage } = req.body as TranslateRequestBody;
 
   try {
