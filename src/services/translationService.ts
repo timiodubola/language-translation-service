@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { TranslatedWord } from '../types';
+import { TranslateRequestBody, TranslatedWord } from '../types';
+import { filterAndChunkWords } from '../utils/wordFilter';
 
 const TRANSLATION_SERVICE_URL = "http://127.0.0.1:5000/translate";
 
@@ -27,9 +28,10 @@ async function translateBatch(chunk: string[], targetLanguage: string): Promise<
 
 export async function translateWordsInBatch(words: string[], targetLanguage: string): Promise<TranslatedWord[]> {
   try {
+    const chunks = filterAndChunkWords(words);
 
     const translatedWords = await Promise.all(
-        words.map(word => translateBatch(word, targetLanguage))
+      chunks.map(chunk => translateBatch(chunk, targetLanguage))
     );
 
     return translatedWords.flat();
